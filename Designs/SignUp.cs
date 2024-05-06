@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -45,7 +46,7 @@ namespace DataBaseSQLConnectedSignUpXample
             }
             else
             {
-                SqlCommand insertCommand = new SqlCommand("insert into Users(Name,Email,Password,Country) values(@Username, @UserEmail, @Password, @Country)");
+                MySqlCommand insertCommand = new MySqlCommand("INSERT INTO Users(Name, Email, Password, Country) VALUES(@Username, @UserEmail, @Password, @Country)");
 
                 insertCommand.Parameters.AddWithValue("@Username", Username);
                 insertCommand.Parameters.AddWithValue("@UserEmail", UserEmail);
@@ -54,7 +55,7 @@ namespace DataBaseSQLConnectedSignUpXample
 
                 int row = objDBAccess.executeQuery(insertCommand);
 
-                if(row == 1)
+                if (row == 1)
                 {
                     MessageBox.Show("Account Created Successfully");
                     this.Hide();
@@ -63,11 +64,9 @@ namespace DataBaseSQLConnectedSignUpXample
                 }
                 else
                 {
-                    MessageBox.Show("Error Occured. Try again");
+                    MessageBox.Show("Error Occurred. Try again");
                 }
-
             }
-
         }
 
         private void LogInFormBtn_Click(object sender, EventArgs e)

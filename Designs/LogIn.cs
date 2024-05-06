@@ -64,5 +64,6 @@ namespace DataBaseSQLConnectedSignUpXample.Designs
             SignUp signUp = new SignUp();
             signUp.Show();
         }
+
     }
 }

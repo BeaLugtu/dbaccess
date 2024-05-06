@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace DataBaseSQLConnectedSignUpXample
 {
@@ -16,23 +17,28 @@ namespace DataBaseSQLConnectedSignUpXample
         private static SqlDataAdapter adapter = new SqlDataAdapter();
         public SqlTransaction DbTran;
 
-        private static string strConnString = "Data Source=192.168.1.111,1433;Initial Catalog=practiceLoginSignUp;Integrated Security=True;";
-        // Creates a database connection
+
+        private readonly string MySqlCon = "server=26.96.197.206; user=root; database=exam.io; password=admin";
+        private readonly MySqlConnection mySqlConnection = new MySqlConnection();
+
+        // Creates a database connectionm
         public void createConn()
         {
             try
             {
-                if (connection.State != ConnectionState.Open)
+                if (mySqlConnection.State != ConnectionState.Open)
                 {
-                    connection.ConnectionString = strConnString;
-                    connection.Open();
+                    mySqlConnection.ConnectionString = MySqlCon;
+                    mySqlConnection.Open();
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                // Log or handle the exception
+                throw;
             }
         }
+
 
         // Closes the existing database connection
         public void closeConn()
@@ -116,24 +122,32 @@ namespace DataBaseSQLConnectedSignUpXample
         }
 
         // Executes a SQL command (insert, update, delete) using a provided SqlCommand object
-        public int executeQuery(SqlCommand dbCommand)
+        // Executes a SQL command (insert, update, delete) using a provided MySqlCommand object
+        public int executeQuery(MySqlCommand dbCommand)
         {
             try
             {
-                if (connection.State == 0)
+                if (mySqlConnection.State != ConnectionState.Open)
                 {
-                    createConn();
+                    createConn(); // Ensure connection is open
                 }
 
-                dbCommand.Connection = connection;
+                dbCommand.Connection = mySqlConnection; // Assign mySqlConnection
                 dbCommand.CommandType = CommandType.Text;
 
                 return dbCommand.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                throw ex;
+                // Log or handle the exception
+                throw;
             }
         }
+
+        internal int executeQuery(SqlCommand insertCommand)
+        {
+            throw new NotImplementedException();
+        }
     }
+
 }
